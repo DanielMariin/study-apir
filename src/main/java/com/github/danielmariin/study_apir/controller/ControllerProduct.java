@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.danielmariin.study_apir.model.Product;
 import com.github.danielmariin.study_apir.service.ProductService;
 
 @RestController
@@ -16,26 +19,31 @@ import com.github.danielmariin.study_apir.service.ProductService;
 public class ControllerProduct {
 
     @Autowired
-    private ProductService productService = new ProductService();
+    private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<String> create() {
+    public ResponseEntity<Product> create(@RequestBody Product product) {
 
-        productService.createProduct(null);
+        //System.out.println(product.getNome());
 
-        return ResponseEntity.status(201).body("Produto cadastrado");
+        Product productCreated = productService.createProduct(product);
+
+        return ResponseEntity.status(201).body(productCreated);
     }
-    @PutMapping
-    public ResponseEntity<String> update() {
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(
+                        @PathVariable Long id, 
+                        @RequestBody Product product) {   
+        Product productUpdate = 
+        productService.updateProduct(id, product);
 
-        productService.updateProduct(null, null);
-        return ResponseEntity.status(200).body("Produto atualizado");
+        return ResponseEntity.status(200).body(productUpdate);
     }
     @GetMapping
     public ResponseEntity<String> find() {
 
         productService.getProductById(null);
-        return ResponseEntity.status(200).body("maça");
+        return ResponseEntity.status(200).body("Pêra");
     }
     @DeleteMapping
     public ResponseEntity<Void> delete() {
