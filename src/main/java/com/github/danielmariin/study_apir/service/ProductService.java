@@ -24,6 +24,10 @@ public class ProductService {
     public Product getProductById(Long id) {
         return null;
     }
+    public List<Product> getAll() {
+        return products;
+    }
+
     public Optional<Product> updateProduct(Long id, Product product) {
     
         return products.stream()
@@ -34,8 +38,9 @@ public class ProductService {
                     return p;
                 });
     }
-    public void deleteProduct(Long id) {
-
+    public boolean deleteProduct(Long id) {
+            return products.removeIf(p -> p.getId().equals(id));
+        
     }
     
 

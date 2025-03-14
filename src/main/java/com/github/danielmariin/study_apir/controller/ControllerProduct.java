@@ -1,5 +1,8 @@
 package com.github.danielmariin.study_apir.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,25 +33,39 @@ public class ControllerProduct {
 
         return ResponseEntity.status(201).body(productCreated);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {      
+        boolean result = productService.deleteProduct(id);
+        if (result) {
+            return ResponseEntity.noContent().build();
+            
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+        
+    }
+    
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(
                         @PathVariable Long id, 
                         @RequestBody Product product) {   
-        Product productUpdate = 
-        productService.updateProduct(id, product);
+        
+        
+    return productService.updateProduct(id, product)
+    .map(ResponseEntity ::ok)
+    .orElse(ResponseEntity.notFound().build());
+                    }
 
-        return ResponseEntity.status(200).body(productUpdate);
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findById(@PathVariable Long id) {
+        
+        return ResponseEntity.status(200).body(null);
     }
+
     @GetMapping
-    public ResponseEntity<String> find() {
+    public ResponseEntity<List<Product>> findAll() {
 
-        productService.getProductById(null);
-        return ResponseEntity.status(200).body("Pêra");
-    }
-    @DeleteMapping
-    public ResponseEntity<Void> delete() {
-
-        productService.deleteProduct(null);
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(productService.getAll());
     }
 }
