@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.danielmariin.dto.ProductRequestCreate;
+import com.github.danielmariin.dto.ProductRequestUpdate;
 import com.github.danielmariin.study_apir.model.Product;
 import com.github.danielmariin.study_apir.service.ProductService;
 
@@ -25,11 +27,11 @@ public class ControllerProduct {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<Product> create(@RequestBody ProductRequestCreate dto) {
 
         //System.out.println(product.getNome());
 
-        Product productCreated = productService.createProduct(product);
+        Product productCreated = productService.createProduct(dto);
 
         return ResponseEntity.status(201).body(productCreated);
     }
@@ -49,10 +51,10 @@ public class ControllerProduct {
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(
                         @PathVariable Long id, 
-                        @RequestBody Product product) {   
+                        @RequestBody ProductRequestUpdate dto) {   
         
         
-    return productService.updateProduct(id, product)
+    return productService.updateProduct(id, dto)
     .map(ResponseEntity ::ok)
     .orElse(ResponseEntity.notFound().build());
                     }
@@ -60,7 +62,9 @@ public class ControllerProduct {
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id) {
         
-        return ResponseEntity.status(200).body(null);
+        return productService.getProductById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
