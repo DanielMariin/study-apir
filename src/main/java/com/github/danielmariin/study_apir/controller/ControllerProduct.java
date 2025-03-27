@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.danielmariin.dto.ProductRequestCreate;
 import com.github.danielmariin.dto.ProductRequestUpdate;
+import com.github.danielmariin.dto.ProductResponse;
 import com.github.danielmariin.study_apir.model.Product;
 import com.github.danielmariin.study_apir.service.ProductService;
 
@@ -27,13 +28,18 @@ public class ControllerProduct {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody ProductRequestCreate dto) {
+    public ResponseEntity<ProductResponse> create(@RequestBody ProductRequestCreate dto) {
 
         //System.out.println(product.getNome());
 
         Product productCreated = productService.createProduct(dto);
 
-        return ResponseEntity.status(201).body(productCreated);
+        ProductResponse response = new ProductResponse();
+        response.setId(productCreated.getId());
+        response.setNome(productCreated.getNome());
+        response.setValor(productCreated.getValor());
+
+        return ResponseEntity.status(201).body(response);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {      
