@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.danielmariin.dto.ProductRequestCreate;
-import com.github.danielmariin.dto.ProductRequestUpdate;
-import com.github.danielmariin.dto.ProductResponse;
+import com.github.danielmariin.study_apir.dto.ProductRequestCreate;
+import com.github.danielmariin.study_apir.dto.ProductRequestUpdate;
+import com.github.danielmariin.study_apir.dto.ProductResponse;
 import com.github.danielmariin.study_apir.model.Product;
 import com.github.danielmariin.study_apir.service.ProductService;
 
